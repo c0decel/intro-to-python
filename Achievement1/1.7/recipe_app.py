@@ -142,7 +142,7 @@ def search_by_ingredients():
     if search_results:
         print(len(search_results), " found: ")
 
-        for i, recipe in enumerate(search_results, start=1):
+        for i, recipe in enumerate(search_results):
             print(format_recipe(recipe))
     else:
         print(">>> None found.")
@@ -188,20 +188,20 @@ def edit_recipe():
         recipe_to_edit.cook_time = new_cook_time
         recipe_to_edit.calc_difficulty()
     elif part_to_edit == 3:
-        ingredients_list = []
         while True:
             new_ingredients = input(">>> Ingredients (separate with a comma): ").title()
-            if ingredient != "":
-                ingredients_list.append(new_ingredients)
+            if len(new_ingredients) < 1:
+                print(">>> Cannot be blank")
+                return
             else:
+                recipe_to_edit.ingredients = new_ingredients
                 break
-        recipe_to_edit.ingredients = new_ingredients
         recipe_to_edit.calc_difficulty()
+
     else:
         print(">>> Invalid number.")
         return
 
-    recipe_to_edit.difficulty = recipe_to_edit.calc_difficulty()
     session.commit()
     print(">>> DONE.")
     format_recipe(recipe_to_edit)
